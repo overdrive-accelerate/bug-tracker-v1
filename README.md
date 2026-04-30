@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Bug tracker
+Bug tracker is a collaborative workspace for pages, rich documents, and inline databases. It combines a Notion-style editor with database views (table, board, list), nested pages, auth, comments, and file attachments.
 
-## Getting Started
+## Tech stack
+- Next.js 16 (App Router), React 19, TypeScript
+- Convex (database, realtime sync, file storage, server functions)
+- Better Auth + `@convex-dev/better-auth`
+- BlockNote editor
+- Tailwind CSS v4 and custom UI components
 
-First, run the development server:
+## Core features
+- Email/password authentication (`/login`, `/signup`)
+- Rich document editor with slash menu and file upload support
+- Nested pages with sidebar navigation and trash workflow
+- Inline databases with custom properties
+- Multiple database views: table, board, and list
+- Row detail panel with comments, subtasks, and supporting files
+- Light/dark theme toggle
 
+## Project structure
+- `src/app/` - App Router route groups (`(marketing)`, `(auth)`, `(app)`) and API routes
+- `src/components/` - Editor, layout, page tree, database views, and shared UI
+- `src/lib/` - Auth clients/helpers and shared utilities/types
+- `convex/` - Schema, mutations/queries/actions, Better Auth integration, and HTTP routes
+
+## Local development
+### 1) Install dependencies
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2) Configure environment variables
+Create a `.env.local` file in the project root:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+```bash
+NEXT_PUBLIC_CONVEX_URL=your_convex_deployment_url
+NEXT_PUBLIC_CONVEX_SITE_URL=your_convex_site_url
+SITE_URL=http://localhost:3000
+BETTER_AUTH_SECRET=your_auth_secret
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 3) Start Convex backend
+```bash
+npx convex dev
+```
 
-## Learn More
+### 4) Start Next.js app
+```bash
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+Open `http://localhost:3000`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Scripts
+- `npm run dev` - Start local Next.js dev server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run format` - Format codebase with Prettier
+- `npm run format:check` - Check formatting
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Notes
+- Auth API route is implemented at `src/app/api/auth/[...all]/route.ts`.
+- File serving is handled through Convex HTTP route `/file/{storageId}` in `convex/http.ts`.
