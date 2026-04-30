@@ -94,7 +94,7 @@ If the user says "whatever you think is best", provide your recommendation and g
 1. Wait for explicit user approval
 2. Read all relevant files identified in previous phases
 3. Implement following chosen architecture
-4. Follow codebase conventions strictly (check AGENTS.md)
+4. Follow codebase conventions strictly (check AGENTS.md/CLAUDE.md)
 5. Write clean, well-structured code
 6. Update todos as you progress
 
@@ -108,7 +108,7 @@ If the user says "whatever you think is best", provide your recommendation and g
 1. Review from multiple perspectives:
    - Simplicity/DRY/Elegance
    - Bugs/Functional correctness
-   - Project conventions/AGENTS.md compliance
+   - Project conventions compliance
 2. Identify highest severity issues
 3. **Present findings to user and ask what they want to do** (fix now, fix later, or proceed as-is)
 4. Address issues based on user decision
@@ -126,6 +126,7 @@ If the user says "whatever you think is best", provide your recommendation and g
    - Key decisions made
    - Files modified
    - Suggested next steps
+3. Update codebase memory if patterns/architecture changed
 
 ---
 

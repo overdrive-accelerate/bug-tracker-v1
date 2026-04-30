@@ -1,18 +1,19 @@
 ---
 name: agents-md-management
-description: Audit, evaluate, and improve AGENTS.md to ensure optimal project context. Use when the user asks to check, audit, update, improve, or fix the AGENTS.md file, or when project conventions have changed and need to be captured.
+description: Audit, evaluate, and improve AGENTS.md or CLAUDE.md to ensure optimal project context. Use when the user asks to check, audit, update, improve, or fix the project instruction file, or when project conventions have changed and need to be captured.
 ---
 
-# AGENTS.md Management
+# AGENTS.md / CLAUDE.md Management
 
-Audit and improve the AGENTS.md file to ensure it provides optimal project context. Keeps project memory current and actionable.
+Audit and improve the project instruction file (AGENTS.md for GitHub Copilot, CLAUDE.md for Claude Code) to ensure it provides optimal project context. Keeps project memory current and actionable.
 
 ## Workflow
 
 ### Phase 1: Discovery
 
-Find the AGENTS.md file and any related instruction files:
-- `./AGENTS.md` — Primary project context
+Find the instruction file and any related configuration:
+- `./AGENTS.md` — Primary project context (GitHub Copilot)
+- `./CLAUDE.md` — Primary project context (Claude Code)
 - `.github/copilot-instructions.md` — Copilot-specific instructions (if exists)
 
 ### Phase 2: Quality Assessment
@@ -41,7 +42,7 @@ Evaluate against quality criteria:
 
 Format:
 ```
-## AGENTS.md Quality Report
+## Quality Report
 
 ### Summary
 - Score: XX/100 (Grade: X)
@@ -99,7 +100,7 @@ After user approval, apply changes. Preserve existing content structure.
 5. **Undocumented gotchas**: Non-obvious patterns not captured
 6. **Redundant sections**: Duplicate or overly verbose content
 
-## What Makes a Great AGENTS.md
+## What Makes a Great Instruction File
 
 **Key principles:**
 - Concise and scannable
@@ -110,8 +111,8 @@ After user approval, apply changes. Preserve existing content structure.
 
 **Recommended sections** (use only what's relevant):
 - Commands (build, test, dev, lint)
-- Architecture (directory structure, route groups)
-- Key conventions (components, backend, auth)
+- Architecture (directory structure, key patterns)
+- Conventions (components, backend, naming)
 - Configuration notes (compiler, TypeScript, tooling)
 - Performance rules (project-specific)
 - Workflow rules (process expectations)

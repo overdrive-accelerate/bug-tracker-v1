@@ -5,7 +5,7 @@ description: TypeScript code intelligence and type safety practices. Use when th
 
 # TypeScript LSP & Type Safety
 
-Guide for leveraging TypeScript's type system effectively in this project. VS Code provides built-in TypeScript language services (go-to-definition, find references, error checking). This skill focuses on best practices for type safety.
+Guide for leveraging TypeScript's type system effectively. VS Code provides built-in TypeScript language services (go-to-definition, find references, error checking). This skill focuses on best practices for type safety.
 
 ## Type Checking
 
@@ -16,22 +16,19 @@ npx tsc --noEmit
 
 Always run after significant changes to catch type errors early.
 
-## Project Configuration
-
-- TypeScript strict mode is **off** (tsconfig.json)
-- Import path alias: `@/*` → `src/*`
-- React Compiler is enabled — types flow through automatically
-
 ## Type Safety Guidelines
 
 ### Do
 
 - Use explicit types for function parameters at module boundaries
-- Use Convex's generated types (`Id<"pages">`, `Doc<"pages">`) for database entities
+- Use generated types from your ORM/framework (Prisma, Drizzle, Convex, etc.) for database entities
 - Use discriminated unions for state that has multiple shapes
 - Use `as const` for literal type narrowing
 - Leverage inference — don't over-annotate obvious types
-- Use Zod schemas for runtime validation at system boundaries (API inputs, form data)
+- Use Zod/Valibot schemas for runtime validation at system boundaries (API inputs, form data)
+- Use `unknown` and narrow with type guards instead of `any`
+- Prefer interfaces for object shapes that may be extended
+- Use type predicates (`is` functions) for complex narrowing
 
 ### Don't
 
@@ -39,36 +36,42 @@ Always run after significant changes to catch type errors early.
 - Don't use type assertions (`as`) unless absolutely necessary
 - Don't ignore TypeScript errors with `@ts-ignore` — fix the underlying issue
 - Don't create overly complex generic types for simple operations
-- Don't duplicate types that Convex already generates
+- Don't duplicate types that your framework already generates
+- Don't use `!` (non-null assertion) when you can check properly
+- Don't suppress errors to "get it working" — types exist to catch bugs
 
-## Common Patterns in This Project
+## Common Patterns
 
-### Convex Types
+### Discriminated Unions
 ```ts
-import { Id, Doc } from "@/convex/_generated/dataModel";
-
-// Use generated types for documents
-type Page = Doc<"pages">;
-type PageId = Id<"pages">;
+type State =
+  | { status: "idle" }
+  | { status: "loading" }
+  | { status: "success"; data: Data }
+  | { status: "error"; error: Error };
 ```
 
-### Component Props
+### Type Guards
 ```ts
-// Explicit props types for components
-type Props = {
-  pageId: Id<"pages">;
-  onClose: () => void;
-};
+function isUser(value: unknown): value is User {
+  return typeof value === "object" && value !== null && "id" in value;
+}
 ```
 
-### Form Validation
+### Generic Constraints
 ```ts
-import { z } from "zod";
+function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key];
+}
+```
 
-const schema = z.object({
-  title: z.string().min(1),
-  type: z.enum(["text", "image", "table"]),
-});
+### Utility Types
+```ts
+// Pick only what you need
+type UserPreview = Pick<User, "id" | "name" | "avatar">;
+
+// Make fields optional for updates
+type UpdateUser = Partial<Omit<User, "id" | "createdAt">>;
 ```
 
 ## When to Check Types
@@ -77,3 +80,4 @@ const schema = z.object({
 - After refactoring
 - Before considering work "done"
 - When TypeScript errors appear in the editor
+- After changing function signatures or data shapes

@@ -58,8 +58,8 @@ Instructions say WHAT, not HOW. "Add X" or "Fix Y" doesn't mean skip workflows. 
 
 ## Instruction Priority
 
-1. **User's explicit instructions** (AGENTS.md, direct requests) — highest priority
+1. **User's explicit instructions** (AGENTS.md/CLAUDE.md, direct requests) — highest priority
 2. **Skills** — override default behavior where they conflict
 3. **Default system prompt** — lowest priority
 
-If AGENTS.md says "don't use TDD" and a skill says "always use TDD," follow the user's instructions. The user is in control.
+If the user says "don't use TDD" and a skill says "always use TDD," follow the user's instructions. The user is in control.

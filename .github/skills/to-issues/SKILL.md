@@ -15,7 +15,7 @@ Work from whatever is already in the conversation context. If the user passes an
 
 ### 2. Explore the codebase (optional)
 
-If you have not already explored the codebase, do so to understand the current state. Issue titles and descriptions should use the project's vocabulary from AGENTS.md.
+If you have not already explored the codebase, do so to understand the current state. Issue titles and descriptions should use the project's vocabulary from AGENTS.md/CLAUDE.md.
 
 ### 3. Draft vertical slices
 

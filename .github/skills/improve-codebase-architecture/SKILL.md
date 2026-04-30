@@ -28,7 +28,7 @@ Use these terms consistently:
 
 ### 1. Explore
 
-Use the Explore subagent or search tools to walk the codebase. Don't follow rigid heuristics — explore organically and note where you experience friction:
+Walk the codebase organically. Don't follow rigid heuristics — note where you experience friction:
 
 - Where does understanding one concept require bouncing between many small modules?
 - Where are modules **shallow** — interface nearly as complex as the implementation?
@@ -65,3 +65,4 @@ Once the user approves an approach:
 2. Implement the deepening refactor
 3. Verify existing functionality is preserved
 4. Run tests to confirm nothing broke
+5. Update codebase memory with new architecture patterns

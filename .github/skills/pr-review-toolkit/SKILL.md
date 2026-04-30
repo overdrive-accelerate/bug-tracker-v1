@@ -70,7 +70,7 @@ Rates (1-10 each):
 **Focus**: General code review for project guidelines
 
 Checks for:
-- AGENTS.md compliance
+- Project convention compliance
 - Style violations
 - Bug detection
 - Code quality issues
@@ -92,8 +92,6 @@ Checks for:
 - Overly compact or clever code
 
 **Trigger**: "Simplify this code", "Make this clearer"
-
-Note: Preserves functionality while improving structure and maintainability.
 
 ---
 

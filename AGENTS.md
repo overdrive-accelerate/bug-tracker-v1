@@ -1,109 +1,147 @@
 # AGENTS.md
 
+> Drop this file in your project root. GitHub Copilot (VS Code) reads it on every turn.
+> Customize the [PROJECT CUSTOMIZATION] sections for your specific project.
+
+---
+
 ## Project Overview
 
-Notion-like document editor with pages and blocks. Next.js 16 frontend + Convex real-time backend + Better Auth (email/password).
+<!-- [PROJECT CUSTOMIZATION] Replace with your project description -->
+<!-- Example: "E-commerce platform with Next.js frontend and Express API backend." -->
+
+[Describe your project in 1-2 sentences]
 
 ## Tech Stack
 
-- **Frontend**: Next.js 16, React 19, TypeScript 6, Tailwind CSS v4, shadcn/ui, Lucide React, Phosphor Icons
-- **Backend**: Convex (serverless DB + real-time sync)
-- **Auth**: Better Auth with Convex adapter
-- **Forms**: React Hook Form + Zod
-- **Tables**: TanStack React Table
+<!-- [PROJECT CUSTOMIZATION] Replace with your actual tech stack -->
+
+- **Frontend**: [Framework, language, styling]
+- **Backend**: [Framework, database, ORM]
+- **Auth**: [Auth solution]
+- **Testing**: [Test framework]
+- **Other**: [Package manager, CI/CD, etc.]
 
 ## Commands
 
+<!-- [PROJECT CUSTOMIZATION] Add your actual commands -->
+
 ```bash
-npm run dev          # Start Next.js dev server (also run `npx convex dev` for backend)
+# Development
+npm run dev          # Start dev server
+
+# Build
 npm run build        # Production build
-npm run format       # Prettier format all files
-npm run format:check # Check formatting
+
+# Testing
+npm run test         # Run tests
+npm run test:watch   # Watch mode
+
+# Code Quality
+npm run lint         # Lint code
+npm run format       # Format code
+npm run typecheck    # Type check (e.g., npx tsc --noEmit)
 ```
 
 ## Architecture
 
-### Route Groups
+<!-- [PROJECT CUSTOMIZATION] Describe your directory structure -->
 
-- `src/app/(app)/` — Protected routes. Auth checked server-side in layout, redirects to `/login` if unauthenticated.
-- `src/app/(auth)/` — Public auth routes. Redirects to `/` if already authenticated.
-- `src/app/api/auth/` — Better Auth API route handler.
+```
+src/
+├── app/            # Routes / pages
+├── components/     # Reusable UI components
+├── lib/            # Shared utilities
+├── services/       # Business logic / API calls
+└── types/          # TypeScript types
+```
 
 ### Key Directories
 
-| Directory            | Purpose                                    |
-| -------------------- | ------------------------------------------ |
-| `src/components/`    | React components (no nesting beyond `ui/`) |
-| `src/components/ui/` | shadcn/ui primitives                       |
-| `src/lib/`           | Auth helpers, utilities                    |
-| `convex/`            | Backend: schema, queries, mutations        |
-| `convex/betterAuth/` | Better Auth Convex component               |
-
-### Data Model
-
-- **pages**: `title`, `userId`, `updatedAt`, `isDeleted`, `deletedAt` — soft-delete pattern
-- **blocks**: `pageId`, `type` (text | image | table), `content` (string), `position` (number)
-
-Blocks use position-based ordering with midpoint interpolation for reordering.
+| Directory | Purpose |
+|-----------|---------|
+| `src/components/` | React components |
+| `src/lib/` | Shared utilities |
 
 ## Conventions
 
+<!-- [PROJECT CUSTOMIZATION] Add your coding conventions -->
+
 ### Components
+- Use TypeScript for all files
+- Style with [your styling approach]
+- Name components in PascalCase
 
-- `"use client"` directive for interactive components; server components for layouts/auth checks
-- Style with Tailwind utility classes + `cn()` from `src/lib/utils.ts`
-- Toasts via Sonner (`toast.success()`, `toast.error()`)
-- Loading states use Skeleton components
+### Backend
+- All mutations/queries verify authentication
+- Use proper error handling at boundaries
 
-### Convex Functions
+### General
+- No dead code — remove unused variables, imports, functions
+- No overengineering — don't add abstractions for one-time operations
 
-All mutations must verify ownership via:
+## Performance Rules
 
-```ts
-const userId = await getAuthUserId(ctx); // throws if unauthenticated
-```
-
-- Queries/mutations live in top-level `convex/*.ts` files
-- Schema defined in `convex/schema.ts` with `defineSchema`/`defineTable`
-- Import path alias: `@/*` → `src/*`
-
-### Auth Flow
-
-- Server-side: `isAuthenticated()`, `getToken()` from `src/lib/auth-server.ts`
-- Client-side: `authClient` from `src/lib/auth-client.ts`
-- `ConvexClientProvider` wraps the app and provides auth context
-
-## Configuration Notes
-
-- React Compiler is enabled (`next.config.mjs`)
-- TypeScript strict mode is **off**
-- No ESLint configured — only Prettier for formatting
-
-## React & Performance Rules
-
-- **React Compiler is ON** — do NOT use `useMemo`, `useCallback`, or `React.memo` for memoization. The compiler handles this automatically.
-- **No unnecessary `useEffect`** — only use `useEffect` when absolutely necessary (e.g., subscriptions, imperative DOM APIs, syncing with external systems). Never use it for derived state or event handling.
-- **Avoid re-renders & infinite loops** — watch for state updates inside effects that trigger re-renders.
-- **No dead code** — remove unused variables, imports, functions, and commented-out code.
-- **No overengineering** — don't add abstractions, helpers, or wrappers for one-time operations. Keep it simple and direct.
-- **Fix discrepancies and bugs** — always validate against documentation and best practices before implementing.
+<!-- [PROJECT CUSTOMIZATION] Add framework-specific rules -->
+<!-- Examples:
+- React Compiler is ON — do NOT use useMemo, useCallback, or React.memo
+- Use server components by default; client components only when interactive
+- Lazy-load heavy components
+-->
 
 ## Workflow Rules
 
-- **Ask questions first** — before starting implementation or bug fixes, always ask clarifying questions to avoid confusion and mistakes.
+- **Ask questions first** — before starting implementation or bug fixes, ask clarifying questions to avoid confusion and mistakes.
 - **Post-change audit** — after every implementation or bug fix, audit all changes:
   - Sanity check, validity check, hallucination check
-  - Look for bugs, discrepancies, re-renders, infinite loops, `useMemo`, `useCallback`
+  - Look for bugs, discrepancies, infinite loops
   - Verify changes work on top of existing logic and do not break anything
-  - Reference the Documentation References below for correctness
+
+---
 
 ## Context & Memory Management
 
 Context window degrades after ~70% usage. Auto-compaction loses critical details. Use the memory system proactively to prevent this.
 
+### Codebase Snapshot Protocol
+
+On the **first turn of any new chat** where `/memories/repo/` is empty or does not contain a `codebase-snapshot.md`:
+
+1. Perform a comprehensive codebase scan:
+   - Read every key file (components, routes, services, utilities, config)
+   - Document each file's purpose, exports, key patterns, and interactions
+   - Map the data flow (how data moves through the system)
+   - Capture naming conventions, error handling patterns, styling patterns
+   - Note auth patterns, state management, and architectural decisions
+   - Identify gotchas, non-obvious behaviors, and project-specific rules
+
+2. Save the scan to `/memories/repo/codebase-snapshot.md` with sections:
+   - Project overview & tech stack
+   - Directory structure & file purposes
+   - Component/module patterns
+   - Data flow (queries, mutations, API calls)
+   - Error handling patterns
+   - Auth patterns
+   - Naming conventions
+   - Key gotchas & non-obvious behaviors
+   - DO/DON'T best practices
+
+3. Save quick-reference facts to `/memories/repo/codebase-facts.md`:
+   - Build/dev/test commands
+   - Key patterns (one-liners)
+   - Architecture overview
+   - Common gotchas
+
+### Keeping Memory Current
+
+After completing any feature, bug fix, or architectural change:
+- If the change affects patterns, conventions, or architecture → update `/memories/repo/codebase-snapshot.md`
+- If new gotchas or facts were discovered → update `/memories/repo/codebase-facts.md`
+- Do NOT let memory become stale — an outdated snapshot is worse than none
+
 ### Rules
 
-1. **First turn of any new chat**: Before doing any work, read all files in `/memories/repo/` to load persistent codebase knowledge. This eliminates the need to re-scan the codebase from scratch. The comprehensive analysis there contains file purposes, patterns, conventions, and data flow — treat it as your pre-loaded understanding of the codebase.
+1. **First turn of any new chat**: Read all files in `/memories/repo/` to load persistent codebase knowledge. If no snapshot exists, create one using the Codebase Snapshot Protocol above. This eliminates the need to re-scan the codebase from scratch.
 2. **At the start of multi-step work**: Write a plan to session memory (`/memories/session/`) with the task, approach, files involved, and decisions made.
 3. **After each major milestone**: Update session memory with what was completed, what's left, and any key discoveries.
 4. **Before making architectural decisions**: Record the decision and reasoning to session memory so it survives compaction.
@@ -131,7 +169,9 @@ Context window degrades after ~70% usage. Auto-compaction loses critical details
 |-------|------|----------|---------|
 | User | `/memories/` | All conversations | Preferences, patterns, lessons learned |
 | Session | `/memories/session/` | Current chat only | Task plans, progress, in-flight decisions |
-| Repo | `/memories/repo/` | All chats in this workspace | Codebase facts, verified patterns, gotchas |
+| Repo | `/memories/repo/` | All chats in this workspace | Codebase snapshot, verified patterns, gotchas |
+
+---
 
 ## Skills
 
@@ -154,41 +194,13 @@ This project uses Agent Skills (`.github/skills/`) for specialized workflows. Sk
 | `improve-codebase-architecture` | "Improve architecture", "Find refactoring opportunities" |
 | `frontend-design` | "Design UI", "Build a page", "Style this component" |
 
+---
+
 ## Documentation References
 
-Always consult these docs when making changes to the corresponding areas:
-
-### Next.js 16 (App Router)
-
-- [Server & Client Components](https://nextjs.org/docs/app/getting-started/server-and-client-components)
-- [Fetching Data](https://nextjs.org/docs/app/getting-started/fetching-data)
-- [Mutating Data](https://nextjs.org/docs/app/getting-started/mutating-data)
-- [Caching](https://nextjs.org/docs/app/getting-started/caching)
-- [Revalidating](https://nextjs.org/docs/app/getting-started/revalidating)
-- [Error Handling](https://nextjs.org/docs/app/getting-started/error-handling)
-- [Images](https://nextjs.org/docs/app/getting-started/images)
-- [CSS](https://nextjs.org/docs/app/getting-started/css)
-- [Fonts](https://nextjs.org/docs/app/getting-started/fonts)
-- [Metadata & OG Images](https://nextjs.org/docs/app/getting-started/metadata-and-og-images)
-- [Route Handlers](https://nextjs.org/docs/app/getting-started/route-handlers)
-
-### Backend & Database
-
-- [Convex Docs](https://docs.convex.dev/home)
-- [Better Auth](https://better-auth.com/docs/introduction)
-
-### UI & Styling
-
-- [Tailwind CSS v4](https://tailwindcss.com/docs/styling-with-utility-classes)
-- [BlockNote Editor](https://www.blocknotejs.org/docs)
-- [TanStack React Table](https://tanstack.com/table/latest)
-
-### Forms, Validation & State
-
-- [React Hook Form](https://react-hook-form.com/get-started)
-- [Zod](https://zod.dev/api)
-- [TanStack Query](https://tanstack.com/query/latest) — reference for caching/state management patterns
-
-### React
-
-- [React Docs](https://react.dev/learn/describing-the-ui)
+<!-- [PROJECT CUSTOMIZATION] Add links to docs relevant to your stack -->
+<!-- Examples:
+- [Next.js App Router](https://nextjs.org/docs/app)
+- [Prisma ORM](https://www.prisma.io/docs)
+- [Tailwind CSS](https://tailwindcss.com/docs)
+-->

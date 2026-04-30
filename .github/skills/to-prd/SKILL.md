@@ -9,7 +9,7 @@ Turn the current conversation context and codebase understanding into a PRD. Do 
 
 ## Process
 
-1. Explore the repo to understand the current state of the codebase, if you haven't already. Use the project's vocabulary from AGENTS.md throughout the PRD.
+1. Explore the repo to understand the current state of the codebase, if you haven't already. Use the project's vocabulary from AGENTS.md/CLAUDE.md throughout the PRD.
 
 2. Sketch out the major modules you will need to build or modify to complete the implementation. Actively look for opportunities to extract deep modules that can be tested in isolation.
 

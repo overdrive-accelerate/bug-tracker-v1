@@ -5,14 +5,14 @@ description: Review code for bugs, quality issues, and project convention compli
 
 # Code Review
 
-Automated code review focused on finding real bugs and AGENTS.md compliance issues. Uses confidence scoring to filter false positives, ensuring only high-quality, actionable feedback.
+Automated code review focused on finding real bugs and convention compliance issues. Uses confidence scoring to filter false positives, ensuring only high-quality, actionable feedback.
 
 ## Review Process
 
-1. **Gather context**: Read AGENTS.md guidelines and understand project conventions
+1. **Gather context**: Read AGENTS.md/CLAUDE.md guidelines and understand project conventions
 2. **Identify scope**: Determine which files were recently modified or specified by the user
 3. **Multi-perspective analysis**: Review from multiple angles:
-   - AGENTS.md compliance (coding standards, patterns, conventions)
+   - Convention compliance (coding standards, patterns, naming)
    - Bug detection (logic errors, edge cases, race conditions)
    - Silent failures (empty catch blocks, swallowed errors, missing validation)
    - Historical context (does the change break existing patterns?)
@@ -38,7 +38,7 @@ Automated code review focused on finding real bugs and AGENTS.md compliance issu
 - Security vulnerabilities (XSS, injection, auth bypass)
 - Memory leaks (unsubscribed listeners, uncleaned effects)
 - Breaking changes to existing functionality
-- Violations of AGENTS.md conventions that will cause issues
+- Violations of project conventions that will cause issues
 
 ## What NOT to Flag (False Positives)
 
@@ -46,10 +46,10 @@ Automated code review focused on finding real bugs and AGENTS.md compliance issu
 - Something that looks like a bug but isn't
 - Pedantic nitpicks a senior engineer wouldn't call out
 - Issues a linter or TypeScript compiler would catch
-- General code quality issues unless explicitly in AGENTS.md
+- General code quality issues unless explicitly in project conventions
 - Issues explicitly silenced in code (lint ignore comments)
 - Changes in functionality that are intentional
-- Stylistic preferences not documented in AGENTS.md
+- Stylistic preferences not documented in conventions
 
 ## Output Format
 
